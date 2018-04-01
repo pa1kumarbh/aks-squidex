@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: squidex-mongo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: squidex-mongo
+    spec:
+      containers:
+      - name: squidex-mongo
+        image: mongo
+        ports:
+        - containerPort: 27017
+          name: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: squidex-mongo
+spec:
+  ports:
+  - port: 27017
+  selector:
+    app: squidex-mongo

@@ -1,0 +1,38 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: squidex-squidex
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: squidex-squidex
+    spec:
+      containers:
+      - name: squidex-squidex
+        image: squidex/squidex:dev
+        ports:
+        - containerPort: 80
+        env:
+        - name: URLS__BASEURL
+          value: Your FQDN. Run fqdn.sh.
+        - name: EVENTSTORE__MONGODB__CONFIGURATION
+          value: mongodb://squidex-mongo
+        - name: STORE__MONGODB__CONFIGURATION
+          value: mongodb://squidex-mongo
+        - name: IDENTITY__GOOGLECLIENT
+          value: 
+        - name: IDENTITY__GOOGLESECRET
+          value: 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: squidex-squidex
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: squidex-squidex
